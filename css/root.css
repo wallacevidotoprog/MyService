@@ -1,0 +1,18 @@
+@charset "UTF-8";
+:root{
+    --heightTopMenu: 60px;
+
+    --cor1:#012E40;
+    --cor2:#024959;
+    --cor3:#026773;
+    --cor4:#3CA6A6;
+    --cor5:#F2E3D5;
+    --cor1RGBA:#0b33429c;
+
+
+}
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}

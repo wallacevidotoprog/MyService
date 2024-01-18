@@ -1,0 +1,74 @@
+@import url("root.css");
+
+body{
+    background-color: var(--cor4);
+}
+.body-site{
+    position: fixed;
+    background-color: #010440;
+    width: 100%;
+    height: var(--heightTopMenu);
+    display: flex;
+    justify-content: space-between;
+}
+.body-site .logo img{
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    float: left;
+}
+.body-site .menu{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    width: 450px;
+}
+.body-site .menu .link-menu{
+    width: 100%;
+    height: 30px;
+    cursor: pointer;   
+    margin: 3px;
+    background-color: var(--cor2);
+    color: var(--cor5);
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    text-decoration: none;
+    text-align: center;
+
+
+}
+.body-site .login{   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.body-site .login a img{
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+}
+.container{
+
+    display: block;
+    width: 70%;
+    height: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top:var(--heightTopMenu);
+
+   
+}
+.container iframe{
+    width: 100%;
+    height: 100%;
+    
+}
+footer{
+    /* background-color: #010440; */
+    background-color:blueviolet;
+    text-align: center;
+    color: #79DCF2;
+    padding: 20px;
+}
