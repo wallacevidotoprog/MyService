@@ -41,7 +41,7 @@ function handleCredentialResponse(response) {
       window.location.href = res;
     }
     else if(res.startsWith('Email')){
-
+      alert(res);
     }
     else{
       alert(res);

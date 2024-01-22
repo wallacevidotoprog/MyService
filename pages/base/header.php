@@ -1,16 +1,16 @@
 <header class="body-site">
         <div class="logo">
-            <a href="index.php"><img src="img/logo.png" alt="logo svc"></a>
+            <a href="?home"><img src="img/logo.png" alt="logo svc"></a>
         </div>
         <nav class="menu">
             <a class="link-menu" href="?home">Home</a>
-            <a class="link-menu" href="?buscar">Buscar</a>
+            <a class="link-menu" href="">Buscar</a>
             <a class="link-menu" href="#">LINK</a>
             <a class="link-menu" href="?quemsomos">Quem Somos</a>
             
             <a class="link-menu" href="connection/logout.php">
                 <?php if (isset($_SESSION["ID"])) {
-                 echo "ID";echo($_SESSION["ID"]);} 
+                 echo "ID ";echo($_SESSION["ID"]);} 
                  else{echo "null";}?>
             </a>
 

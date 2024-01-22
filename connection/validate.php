@@ -6,8 +6,8 @@
         echo google();
     }
     else{
-        print_r($_SESSION);
-        host();
+        
+        echo host();
     }
 
 
@@ -37,15 +37,21 @@
         if(isset($_POST["email"]) || isset($_POST["password"])){
 
             $email = $mysqli->real_escape_string($_POST["email"]);
-            $pass = $mysqli->real_escape_string($_POST["password"]);            
-            $result = $mysqli->query("SELECT * FROM user WHERE email ='$email' AND pass='$pass';") or die($mysqli->error);
-        
-            if ($result->num_rows > 0) {
-            if (!isset($_SESSION)) {
-                session_start();
-            $_SESSION["ID"] = $result->fetch_assoc()["ID"];
-            header("Location: ../index.php");   
-            }    
+            $pass = $mysqli->real_escape_string($_POST["password"]); 
+            
+            $result = $mysqli->query("SELECT * FROM user WHERE email ='$email'LIMIT 1;") or die($mysqli->error);
+            $resut_userP = $result->fetch_assoc();
+
+            if(password_verify($pass,$resut_userP['pass'])){
+                if (!isset($_SESSION)) {
+                    session_start();
+                $_SESSION["ID"] = $resut_userP["ID"];
+                header("Location: ../index.php");   
+                }  
+
+            }
+            else{
+                return "Senha você errou algo";
             }
         }
     }    function ExistUser(string $value,string  $id_gg){
@@ -72,8 +78,8 @@
         $email = $date['email'];
         $id_google = $date['id_google'];
         $image = bindec(file_get_contents($date['image']));
-        
-        $INTO = "INSERT INTO `user`(`name`, `email`, `img`, `ID_Google`, `accont_google`) VALUES ('$name','$email','$image','$id_google','1');";
+        $pass = password_hash($id_google, PASSWORD_DEFAULT);        
+        $INTO = "INSERT INTO `user`(`name`, `email`,`pass`, `img`, `ID_Google`, `accont_google`) VALUES ('$name','$email','$pass','$image','$id_google','1');";
         $reset = $mysqli->query($INTO);
     }
 

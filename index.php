@@ -21,22 +21,21 @@ if (!isset($_SESSION)) {
 <body>
     <?php include("pages/base/header.php") ?>
 
-    <main class="container">
-        <div class="body-main">
-            <?php    
-                
-            if(isset($_GET['home'])){                
-                include('pages/home.php');
-            } elseif(isset($_GET['mypage'])){
-                include('pages/mypage.php');
-            }
-            elseif(isset($_GET['logout'])){
-                
-            }
-            
+    <main class="container" >
+        <div class="body-main" id="pages">
+            <?php
+             echo (array_key_first($_GET));
+             switch (array_key_first($_GET)) {
+                 case 'mypage':
+                     include('pages/mypage.php');
+                     break;
+                 default:                    
+                     include('pages/home.php');
+                     break;
+             }
             ?>
         </div>
-
+        
     </main>
     <footer>Desenvolvido por Wallace Vidoto - Copyright 2024 - Todos os Direitos reservados.</footer>
 </body>
