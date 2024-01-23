@@ -12,7 +12,7 @@ module.exports = {
         }
 
         const [,token] = auth.split(' ');
-        console.log("TOKEN:"+token);
+        //console.log("TOKEN:"+token);
 
         if(!token){
             return res.status(400).json({
@@ -23,8 +23,9 @@ module.exports = {
 
         try{
             const decod = await promisify(jwt.verify)(token,"QW12ER34TY56UI78IO90");
-            console.log(decod.id);
-            req.userId = decod.id;
+            //console.log(decod.id);
+            req.userIdTK = decod.id;
+            console.log(decod);
             return next();
             
         }catch(err){

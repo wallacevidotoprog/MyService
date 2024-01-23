@@ -8,39 +8,71 @@ const { eAdmin } = require('./middlewares/auth')
 server.use(express.json());
 
 
-
-
-server.get("/",eAdmin, async (req,res)=>{
+server.post("/teste", async (req,res)=>{
    
-   return res.json({
-    Err:false,
-    messge: "logado",    
-    idUserLogado: req.userId
-   });
+   const tt = await User.Register(req,res);
+   return tt;
 });
 
-server.post("/register", async (req,res)=>{
+server.get("/",eAdmin, async (req,res)=>{
+   const total = await User.User.findAll({
+    attributes:['ID','name','email']
+   }).then((users)=>{
+    return res.json({
+        err:false,
+        DATA: users, 
+        idUserLogado: req.userIdTK
+       });
+   }).catch((err)=>{
+    return res.status(400).json({
+        err:false,
+        messge: err
+       });
+   });
    
-    req.body.pass = await crypto.hash(req.body.pass,10);
-    await User.create(req.body).then(()=>{
-        return res.json({
-            err:false,
-            message:"Cadastro comcluido.",
-        });
-    }).catch(()=>{
-        return res.status(400).json({
-            err:true,
-            message:"Erro ao se cadastrar."
-        });
-    });
-    
-})
+});
+
+server.post("/register", async (req,res)=>{return  await User.Register(req,res);})
+server.post("/update/user",eAdmin, async (req,res)=>{
+return await User.Update(req,res);
+});
 
 server.post("/login", async(req,res)=>{
-    var token = jwt.sign({id:2},"QW12ER34TY56UI78IO90",{expiresIn:'1d'});
-    return res.json({
-        TOKEN: token
+    //const token = jwt.sign({id:req.body.ID},"QW12ER34TY56UI78IO90",{expiresIn:'1d'});
+    console.log(req.body.ID);
+    const user = await User.User.findOne({
+        attributes:['ID','name','email','pass'],
+        where:{
+            email: req.body.email
+        }
     });
+
+    if(user ===null){
+        return res.status(400).json({
+            err: true,
+            message: "Algo de errado ao digitar seu email ou senha."
+        });
+    }
+    else{       
+        if((await crypto.compare(req.body.pass,user.pass))){
+            const token = jwt.sign({id:user.ID},"QW12ER34TY56UI78IO90",{expiresIn:'1d'});
+            return res.status(200).json({
+                err: false,
+                message: "logado con sucesso",
+                Token: token
+            });        
+        }
+        else{
+            return res.status(401).json({
+                err: true,
+                message: "Algo de errado ao digitar seu email ou senha."
+            });
+        }
+    }
+
+    // return res.json({
+    //     TOKEN: token
+    // });
 });
 
 
