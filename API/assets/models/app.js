@@ -7,8 +7,8 @@ const connection = new Sequelize('database', 'root', '', {
 
   connection.authenticate().then(()=>{
     console.log("Connect database OK")
-  }).catch(()=>{
-    console.log("Connect database ERR")
+  }).catch((err)=>{
+    console.log("Connect database ERR("+err+")")
   });
 
   module.exports = connection;
