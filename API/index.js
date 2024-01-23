@@ -1,12 +1,32 @@
-const DB = require('./assets/models/app');
 const express = require('express');
 const server = express();
+const User = require('./assets/models/User');
+
+server.use(express.json());
+
+
+
 
 server.get("/", async (req,res)=>{
-    DB.Sequelize;
-   return res.send("OI JOVEM");
+   
+   return res.send('123456789');
 });
 
+server.post("/register", async (req,res)=>{
+    console.log(req.body);
+    await User.create(req.body).then(()=>{
+        return res.json({
+            err:false,
+            message:"Cadastro comcluido."
+        });
+    }).catch(()=>{
+        return res.status(400).json({
+            err:true,
+            message:"Erro ao se cadastrar."
+        });
+    });
+    
+})
 
 
 
