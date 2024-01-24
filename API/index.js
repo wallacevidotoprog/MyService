@@ -1,79 +1,21 @@
 const express = require('express');
 const server = express();
-const User = require('./assets/models/User');
-const  crypto = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const User = require('./assets/models/UserController');
 const { eAdmin } = require('./middlewares/auth')
+const upImg= require('./middlewares/updateIMG')
 
 server.use(express.json());
 
 
-server.post("/teste", async (req,res)=>{
-   
-   const tt = await User.Register(req,res);
-   return tt;
-});
+server.get("/",eAdmin, User.TesteAll);
 
-server.get("/",eAdmin, async (req,res)=>{
-   const total = await User.User.findAll({
-    attributes:['ID','name','email']
-   }).then((users)=>{
-    return res.json({
-        err:false,
-        DATA: users, 
-        idUserLogado: req.userIdTK
-       });
-   }).catch((err)=>{
-    return res.status(400).json({
-        err:false,
-        messge: err
-       });
-   });
-   
-});
+server.post("/register",User.RegisterUser);
 
-server.post("/register", async (req,res)=>{return  await User.Register(req,res);})
-server.post("/update/user",eAdmin, async (req,res)=>{
-return await User.Update(req,res);
-});
+server.post("/update/user",eAdmin, User.UpdateUser);
 
-server.post("/login", async(req,res)=>{
-    //const token = jwt.sign({id:req.body.ID},"QW12ER34TY56UI78IO90",{expiresIn:'1d'});
-    console.log(req.body.ID);
-    const user = await User.User.findOne({
-        attributes:['ID','name','email','pass'],
-        where:{
-            email: req.body.email
-        }
-    });
+server.post("/update/avatar",eAdmin, upImg.single('image'), User.UpdateAvatarUser);
 
-    if(user ===null){
-        return res.status(400).json({
-            err: true,
-            message: "Algo de errado ao digitar seu email ou senha."
-        });
-    }
-    else{       
-        if((await crypto.compare(req.body.pass,user.pass))){
-            const token = jwt.sign({id:user.ID},"QW12ER34TY56UI78IO90",{expiresIn:'1d'});
-            return res.status(200).json({
-                err: false,
-                message: "logado con sucesso",
-                Token: token
-            });        
-        }
-        else{
-            return res.status(401).json({
-                err: true,
-                message: "Algo de errado ao digitar seu email ou senha."
-            });
-        }
-    }
-
-    // return res.json({
-    //     TOKEN: token
-    // });
-});
+server.post("/login", User.LoginUser);
 
 
 server.listen(3000,()=>{

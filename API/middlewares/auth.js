@@ -1,5 +1,6 @@
 const jwt =require('jsonwebtoken');
 const {promisify} = require('util');
+require('dotenv').config();
 
 module.exports = {
     eAdmin: async (req,res,next)=>{
@@ -22,16 +23,17 @@ module.exports = {
         }
 
         try{
-            const decod = await promisify(jwt.verify)(token,"QW12ER34TY56UI78IO90");
+            const decod = await promisify(jwt.verify)(token,process.env.KEY_TOKEN);
             //console.log(decod.id);
             req.userIdTK = decod.id;
-            console.log(decod);
+            req.userEmailTK = decod.email;
+            //console.log(decod);
             return next();
             
         }catch(err){
             return res.status(400).json({
                 err: true,
-                message: "Você não está logado. "
+                message: "Você não está logado."
             });
         }
     }
